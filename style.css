@@ -1,0 +1,316 @@
+/* =========================================================
+   Tic-Tac-Toe — styles.css
+   Clean, modern, responsive styling with subtle animations.
+   ========================================================= */
+
+/* ---------- Design tokens (CSS custom properties) ---------- */
+:root {
+  --bg-gradient-start: #090786;
+  --bg-gradient-end: #0d0d0d;
+  --card-bg: #ffffff;
+  --text-strong: #0f172a;
+  --text-muted: #64748b;
+
+  --primary: #33d721;
+  --primary-hover: #4eca38;
+  --primary-active: #4eca38;
+
+  --cell-bg: #224b74;
+  --cell-hover: #225597;
+  --cell-border: #2c5892;
+
+  --x-color: #2563eb;   /* blue for X */
+  --o-color: #e11d48;   /* rose for O */
+  --win-bg: #dcfce7;    /* green tint for winning cells */
+  --win-border: #22c55e;
+
+  --radius: 16px;
+  --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  --transition: 160ms ease;
+}
+
+/* ---------- Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-strong);
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Screens (menu / game) ---------- */
+.screen {
+  display: none;
+  width: 100%;
+  justify-content: center;
+}
+
+.screen.is-active {
+  display: flex;
+  animation: fade-in 260ms ease;
+}
+
+/* ---------- Card container ---------- */
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+/* ---------- Titles ---------- */
+.title {
+  font-size: clamp(2.2rem, 8vw, 3rem);
+  letter-spacing: 0.5px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.game-heading {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 700;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: transform var(--transition), background-color var(--transition),
+    box-shadow var(--transition), color var(--transition);
+  width: 100%;
+}
+
+.btn:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  background: var(--primary-active);
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--primary);
+  border: 2px solid var(--cell-border);
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+.menu-buttons {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.game-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+/* ---------- Status (whose turn) ---------- */
+.status {
+  margin-top: 16px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-height: 1.5rem;
+}
+
+.status.turn-x {
+  color: var(--x-color);
+}
+
+.status.turn-o {
+  color: var(--o-color);
+}
+
+/* ---------- Board ---------- */
+.board {
+  margin: 22px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min(88vw, 330px);
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  background: var(--cell-bg);
+  border: 2px solid var(--cell-border);
+  border-radius: var(--radius);
+  font-size: clamp(2.5rem, 13vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-strong);
+  transition: background-color var(--transition), transform var(--transition),
+    border-color var(--transition);
+}
+
+.cell:hover:not(:disabled) {
+  background: var(--cell-hover);
+  transform: translateY(-2px);
+}
+
+.cell:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+/* Colored marks */
+.cell.x {
+  color: var(--x-color);
+}
+
+.cell.o {
+  color: var(--o-color);
+}
+
+/* Pop-in animation when a mark is placed */
+.cell.taken {
+  animation: pop 200ms ease;
+  background: #ffffff;
+}
+
+/* Winning combination highlight */
+.cell.winner {
+  background: var(--win-bg);
+  border-color: var(--win-border);
+  animation: pulse 900ms ease-in-out infinite;
+}
+
+/* ---------- Result message ---------- */
+.result {
+  margin-top: 22px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  min-height: 1.6rem;
+}
+
+.result.win {
+  color: var(--win-border);
+}
+
+.result.lose {
+  color: var(--o-color);
+}
+
+.result.draw {
+  color: var(--text-muted);
+}
+
+.result.is-hidden {
+  display: none;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ---------- Respect reduced-motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
